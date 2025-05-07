@@ -26,13 +26,24 @@ public class IssueController {
 
     // GET http://localhost:8080/gitminer/issues/{id}
     @GetMapping("/{id}")
-    public Issue findOne(@PathVariable String id) throws IssueNotFoundException {
+    public Issue findOneById(@PathVariable String id) throws IssueNotFoundException {
         Optional<Issue> issue = issueRepository.findById(id);
         if (!issue.isPresent()) {
             throw new IssueNotFoundException();
         }
 
         return issue.get();
+    }
+
+    // GET http://localhost:8080/gitminer/issues/state/{state}
+    @GetMapping("/state/{state}")
+    public List<Issue> findOneByState(@PathVariable String state) throws IssueNotFoundException {
+        List<Issue> issue = issueRepository.findByState(state);
+        if (!issue.isEmpty()) {
+            throw new IssueNotFoundException();
+        }
+
+        return issue;
     }
 
     // POST http://localhost:8080/gitminer/issues
