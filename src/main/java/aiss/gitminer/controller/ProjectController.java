@@ -26,7 +26,7 @@ public class ProjectController {
         return projectRepository.findAll();
     }
 
-    // GET http://localhost:8080/api/projects/{id}
+    // GET http://localhost:8080/gitminer/projects/{id}
     @GetMapping("/{id}")
     public Project findOne(@PathVariable String id) throws ProjectNotFoundException {
 
