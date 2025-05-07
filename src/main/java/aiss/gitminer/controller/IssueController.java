@@ -29,7 +29,7 @@ public class IssueController {
     public Issue findOne(@PathVariable String id) throws IssueNotFoundException {
         Optional<Issue> issue = issueRepository.findById(id);
         if (!issue.isPresent()) {
-            throw new IssueNotFoundException()
+            throw new IssueNotFoundException();
         }
 
         return issue.get();
