@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/projects")
+@RequestMapping("/gitminer/projects")
 public class ProjectController {
 
     @Autowired
     ProjectRepository projectRepository;
 
 
-    // GET http://localhost:8080/api/projects
+    // GET http://localhost:8080/gitminer/projects
     @GetMapping
     public List<Project> findAll() {
         return projectRepository.findAll();
@@ -39,7 +39,7 @@ public class ProjectController {
         return project.get();
     }
 
-    // POST http://localhost:8080/api/projects
+    // POST http://localhost:8080/gitminer/projects
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Project createProject(@RequestBody @Valid Project project) {
@@ -47,7 +47,7 @@ public class ProjectController {
         return _proj;
     }
 
-    // PUT http://localhost:8080/api/projects/{id}
+    // PUT http://localhost:8080/gitminer/projects/{id}
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateProject(@RequestBody @Valid Project upProject, @PathVariable String id) throws ProjectNotFoundException {
@@ -65,7 +65,7 @@ public class ProjectController {
     }
 
 
-    // DELETE http://localhost:8080/api/projects/{id}
+    // DELETE http://localhost:8080/gitminer/projects/{id}
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void  deleteProject(@PathVariable String id) throws ProjectNotFoundException {
