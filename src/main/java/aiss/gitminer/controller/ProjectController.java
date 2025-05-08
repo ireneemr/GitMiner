@@ -6,9 +6,11 @@ import aiss.gitminer.model.Project;
 import aiss.gitminer.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,9 @@ public class ProjectController {
 
     @Autowired
     ProjectRepository projectRepository;
+
+    // LISTA DONDE SE ALMACENA LOS DATOS ENVIADOS POR LAS OTRAS APIs
+    private final List<Project> datosRECIVIDOS = new ArrayList<>();
 
 
     // GET http://localhost:8080/gitminer/projects
@@ -39,12 +44,14 @@ public class ProjectController {
         return project.get();
     }
 
-    // POST http://localhost:8080/gitminer/projects
-    @PostMapping
+
+    // POST http://localhost:8080/gitminer/projects/recive
+    @PostMapping("/recive")
     @ResponseStatus(HttpStatus.CREATED)
     public Project createProject(@RequestBody @Valid Project project) {
-        Project _proj = projectRepository.save(project);
-        return _proj;
+        projectRepository.save(new Project(project.getId(), project.getName(), project.getWebUrl(), project.getCommits(), project.getIssues()));
+        System.out.println("📦 Datos recibidos en API B: " + project.getName() + ", " + project.getWebUrl());
+        return project;
     }
 
     // PUT http://localhost:8080/gitminer/projects/{id}
