@@ -127,7 +127,7 @@ public class IssueController {
     })
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateIssue(@Valid @RequestBody Issue updateIssue, @Parameter(description="id of issue to be searched") @PathVariable String id) throws IssueNotFoundException {
+    public void updateIssue(@Valid @RequestBody Issue updateIssue, @Parameter(description="id of issue to be updated") @PathVariable String id) throws IssueNotFoundException {
         Optional<Issue> issueDATA = issueRepository.findById(id);
         if(!issueDATA.isPresent()) {
             throw new IssueNotFoundException();
@@ -161,7 +161,7 @@ public class IssueController {
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteIssue(@Parameter(description="id of issue to be searched") @PathVariable String id) throws IssueNotFoundException {
+    public void deleteIssue(@Parameter(description="id of issue to be deleted") @PathVariable String id) throws IssueNotFoundException {
         if(!issueRepository.existsById(id)){
             throw new IssueNotFoundException();
         }
