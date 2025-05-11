@@ -94,6 +94,7 @@ public class IssueController {
         return issue.get().getComments();
     }
 
+
     // GET http://localhost:8080/gitminer/issues/state/{state}
     @Operation(
             summary = "Retrieve an Issue by state",
