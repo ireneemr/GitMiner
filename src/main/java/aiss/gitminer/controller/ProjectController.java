@@ -3,6 +3,7 @@ package aiss.gitminer.controller;
 import aiss.gitminer.exception.CommentNotFoundException;
 import aiss.gitminer.exception.ProjectNotFoundException;
 import aiss.gitminer.model.Comment;
+import aiss.gitminer.model.Issue;
 import aiss.gitminer.model.Project;
 import aiss.gitminer.repository.ProjectRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -81,7 +82,7 @@ public class ProjectController {
     // POST http://localhost:8080/gitminer/projects/recive
     @Operation(
             summary= "Insert a Project",
-            description = "Add a new Project whose data is passed in the body of the request in JSON format",
+            description = "Add a new project whose data is passed through the adapters. ",
             tags={"projects", "post"})
     @ApiResponses({
             @ApiResponse(responseCode = "201",
@@ -92,10 +93,29 @@ public class ProjectController {
     })
     @PostMapping("/recive")
     @ResponseStatus(HttpStatus.CREATED)
-    public Project createProject(@RequestBody @Valid Project project) {
+    public Project createProjectA(@RequestBody @Valid Project project) {
         projectRepository.save(new Project(project.getId(), project.getName(), project.getWebUrl(), project.getCommits(), project.getIssues()));
         System.out.println("📦 Datos recibidos en API B: " + project.getName() + ", " + project.getWebUrl());
         return project;
+    }
+
+    // POST http://localhost:8080/gitminer/projects
+    @Operation(
+            summary= "Insert a Project",
+            description = "Add a new Project whose data is passed in the body of the request in JSON format",
+            tags={"projects", "post"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "201",
+                    content = { @Content(schema = @Schema(implementation = Project.class),
+                            mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400",
+                    content={@Content(schema=@Schema())})
+    })
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Project createProject(@Valid @RequestBody Project project) {
+        Project _project = projectRepository.save(project);
+        return _project;
     }
 
     // PUT http://localhost:8080/gitminer/projects/{id}
