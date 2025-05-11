@@ -36,7 +36,7 @@ public class CommentController {
             @ApiResponse(responseCode = "200",
                     description = "Listado de comments",
                     content = { @Content(schema = @Schema(implementation = Comment.class),
-                    mediaType = "application/json") })})
+                            mediaType = "application/json") })})
     @GetMapping
     public List<Comment> findAll(){return commentRepository.findAll();}
 
@@ -112,10 +112,12 @@ public class CommentController {
     }
 
     //DELETE http://localhost:8080/gitminer/comments/{id}
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
     @Operation(
             summary = "Delete a Comment",
             description = "Delete a comment object by specifying its id",
-            tags= {"comments", "delete"}
+            tags= {"albums", "delete"}
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204",
@@ -125,15 +127,12 @@ public class CommentController {
             @ApiResponse(responseCode = "404",
                     content = {@Content(schema=@Schema())})
     })
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
     public void deleteComment(@Parameter(description = "id of the comment to be deleted") @PathVariable String id) throws CommentNotFoundException {
         if(!commentRepository.existsById(id)){
             throw new CommentNotFoundException();
         }
         commentRepository.deleteById(id);
     }
-
 
 
 }
