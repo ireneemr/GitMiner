@@ -1,6 +1,7 @@
 package aiss.gitminer.controller;
 
 import aiss.gitminer.exception.IssueNotFoundException;
+import aiss.gitminer.model.Comment;
 import aiss.gitminer.model.Commit;
 import aiss.gitminer.model.Issue;
 import aiss.gitminer.repository.IssueRepository;
@@ -66,6 +67,28 @@ public class IssueController {
         }
 
         return issue.get();
+    }
+
+    // GET http://localhost:8080/gitminer/issues/{id}/comments
+    @Operation(
+            summary = "Obtener comentarios de un issue",
+            description = "Devuelve todos los comentarios asociados a un issue específico",
+            tags = {"issues", "comments", "get"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Comentarios del issue",
+                    content = @Content(schema = @Schema(implementation = Comment.class),
+                            mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "Issue no encontrado")
+    })
+    @GetMapping("/{id}/comments")
+    public List<Comment> getCommentsByIssueId(@Parameter(description = "ID del issue")
+                                              @PathVariable String id) throws IssueNotFoundException {
+        Optional<Issue> issue = issueRepository.findById(id);
+        if (!issue.isPresent()) {
+            throw new IssueNotFoundException();
+        }
+        return issue.get().getComments();
     }
 
     // GET http://localhost:8080/gitminer/issues/state/{state}
